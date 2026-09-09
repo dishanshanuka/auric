@@ -9,7 +9,7 @@ const ATELIER_MOMENTS = [
     title: "Dumbara Wooden Shuttle Loom",
     caption: "Kandy Valley Masters",
     image:
-      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&q=80&w=1200",
     aspect: "col-span-1 md:col-span-2 aspect-[16/9]",
   },
   {
@@ -23,14 +23,14 @@ const ATELIER_MOMENTS = [
     title: "Canting Hot Beeswax Resist",
     caption: "Galle Maritime Ateliers",
     image:
-      "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&q=80&w=1000",
     aspect: "col-span-1 aspect-[4/5]",
   },
   {
     title: "Korvai Temple Border Interlock",
     caption: "Generational Silk Guild",
     image:
-      "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=1000",
     aspect: "col-span-1 md:col-span-2 aspect-[16/9]",
   },
 ];

@@ -143,7 +143,7 @@ export default function ShopPage() {
                       ) : (
                         <>
                           <Plus className="w-3.5 h-3.5 stroke-2" />
-                          <span>Add to Bag</span>
+                          <span>Add to Cart</span>
                         </>
                       )}
                     </button>

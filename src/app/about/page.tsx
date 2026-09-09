@@ -63,7 +63,7 @@ export default function AboutPage() {
         </div>
 
         {/* Visual Story Banner */}
-        <div className="relative w-full aspect-[21/9] rounded-3xl overflow-hidden bg-[#161618] border border-white/10">
+        <div className="relative w-full aspect-21/9 rounded-3xl overflow-hidden bg-[#161618] border border-white/10">
           <Image
             src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=1600"
             alt="Master artisan at a traditional Sri Lankan handloom"
@@ -71,7 +71,7 @@ export default function AboutPage() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
           <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 max-w-lg">
             <span className="text-[9px] uppercase font-mono tracking-widest text-neutral-300 bg-black/60 px-3 py-1 rounded-full border border-white/10">
               Loom Workshop • Dumbara Valley
@@ -147,7 +147,7 @@ export default function AboutPage() {
         </div>
 
         {/* Bottom CTA Banner */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-8 p-10 sm:p-14 rounded-3xl bg-gradient-to-r from-[#18181b] to-[#111113] border border-white/10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-8 p-10 sm:p-14 rounded-3xl bg-linear-to-r from-[#18181b] to-[#111113] border border-white/10">
           <div className="max-w-lg text-center sm:text-left">
             <span className="text-[9px] uppercase font-mono tracking-widest text-neutral-400 block mb-2">
               Experience the Craft

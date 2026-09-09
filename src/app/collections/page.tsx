@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Sparkles, Layers, Compass } from "lucide-react";
+import { ArrowUpRight, Layers, Compass } from "lucide-react";
 
 interface Collection {
   id: string;
@@ -87,12 +87,9 @@ export default function CollectionsPage() {
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
         <div className="max-w-3xl mb-16">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-neutral-400" />
-            <span className="text-[10px] uppercase font-mono tracking-[0.35em] text-neutral-500">
-              Curated Lookbook
-            </span>
-          </div>
+          <span className="text-[10px] uppercase font-mono tracking-[0.35em] text-neutral-500 block mb-3">
+            Curated Lookbook
+          </span>
           <h1 className="font-serif text-4xl sm:text-6xl font-light text-white leading-tight">
             Thematic Capsule Editions
           </h1>

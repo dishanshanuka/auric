@@ -54,7 +54,7 @@ export const PRODUCTS: Product[] = [
     composition: "100% Handspun Organic Cotton",
     technique: "Traditional Dumbara Wooden Shuttle Weave",
     images: [
-      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&q=80&w=1000",
     ],
     featured: true,
   },
@@ -69,7 +69,7 @@ export const PRODUCTS: Product[] = [
     composition: "100% Pure Organic Flax",
     technique: "Low-Tension Shuttle Loom Weave",
     images: [
-      "https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&q=80&w=1000",
     ],
     featured: false,
   },
