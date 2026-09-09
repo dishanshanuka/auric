@@ -65,7 +65,7 @@ export default function AboutPage() {
         {/* Visual Story Banner */}
         <div className="relative w-full aspect-21/9 rounded-3xl overflow-hidden bg-[#161618] border border-white/10">
           <Image
-            src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=1600"
+            src="https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?auto=format&fit=crop&q=80&w=1600"
             alt="Master artisan at a traditional Sri Lankan handloom"
             fill
             sizes="100vw"
