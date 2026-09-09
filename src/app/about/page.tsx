@@ -1,11 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Feather, ShieldCheck, HeartHandshake } from "lucide-react";
-
-export const metadata = {
-  title: "Heritage & Lineage — AURIC Haute Textile Atelier",
-  description: "Centuries of Dumbara loom mastery, botanical indigo vats, and ethical slow-craft patronage.",
-};
+import { ArrowRight, Feather, Droplet, ShieldCheck, HeartHandshake } from "lucide-react";
 
 const PILLARS = [
   {
@@ -14,7 +11,7 @@ const PILLARS = [
     desc: "Every warp thread is calibrated on wooden floor looms, imparting breathable, tactile irregularities unachievable by industrial machinery.",
   },
   {
-    icon: Sparkles,
+    icon: Droplet,
     title: "Botanical Dye Chemistry",
     desc: "All hues originate from organic pigments: crushed madder root, pomegranate rind, and cold-extracted Sri Lankan natural indigo.",
   },
