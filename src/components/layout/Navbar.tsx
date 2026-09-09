@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/CartContext";
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },
@@ -14,10 +15,20 @@ const NAV_LINKS = [
   { name: "Contact", href: "/contact" },
 ];
 
+const emptySubscribe = () => () => {};
+
 export default function Navbar() {
   const pathname = usePathname();
+  const { totalItems } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Client-side mount check without setState inside useEffect
+  const isMounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +55,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Center: Absolute 100% Screen Center Nav Pill */}
+        {/* Center: Absolute Screen Center Nav Pill */}
         <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <nav className="flex items-center bg-[#1c1c1f]/90 backdrop-blur-xl border border-white/15 rounded-full px-2 py-1.5 shadow-xl">
             {NAV_LINKS.map((link) => {
@@ -79,10 +90,15 @@ export default function Navbar() {
         <div className="flex items-center gap-3 z-10">
           <Link
             href="/cart"
-            className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white transition-all backdrop-blur-md"
+            className="relative p-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white transition-all backdrop-blur-md"
             aria-label="Archive Bag"
           >
             <ShoppingBag className="w-4 h-4 stroke-[1.5]" />
+            {isMounted && totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-white text-black text-[9px] font-mono flex items-center justify-center font-bold">
+                {totalItems}
+              </span>
+            )}
           </Link>
 
           <Link
@@ -130,11 +146,11 @@ export default function Navbar() {
             ))}
             <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
               <Link
-                href="/contact"
+                href="/cart"
                 onClick={() => setMobileOpen(false)}
                 className="flex-1 text-center py-2 rounded-full bg-[#1c1c1f] border border-white/10 text-xs uppercase tracking-wider text-neutral-200"
               >
-                Login
+                Bag ({isMounted ? totalItems : 0})
               </Link>
               <Link
                 href="/contact"

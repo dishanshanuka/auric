@@ -1,253 +1,172 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-
-interface CartItem {
-  id: string;
-  name: string;
-  category: string;
-  origin: string;
-  pricePerUnit: number;
-  unit: string;
-  quantity: number;
-  image: string;
-  isSwatchIncluded: boolean;
-}
-
-const INITIAL_CART: CartItem[] = [
-  {
-    id: "tex-01",
-    name: "Heirloom Kanchipuram Raw Silk Saree",
-    category: "Sarees",
-    origin: "Southern Heritage Looms",
-    pricePerUnit: 95000,
-    unit: "saree",
-    quantity: 1,
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800&auto=format&fit=crop",
-    isSwatchIncluded: true,
-  },
-  {
-    id: "tex-02",
-    name: "Hand-Drawn Canting Wax Batik Silk",
-    category: "Batik",
-    origin: "Galle Artisanal Ateliers",
-    pricePerUnit: 14500,
-    unit: "meter",
-    quantity: 3,
-    image: "https://images.unsplash.com/photo-1576426863848-c21f53c60b19?q=80&w=800&auto=format&fit=crop",
-    isSwatchIncluded: false,
-  },
-];
+import { useCart } from "@/context/CartContext";
+import { Trash2, Plus, Minus, ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function CartPage() {
-  const [items, setItems] = useState<CartItem[]>(INITIAL_CART);
+  const { cart, removeFromCart, updateQuantity, clearCart, subtotal, totalItems } =
+    useCart();
 
-  const updateQuantity = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev
-        .map((item) => {
-          if (item.id === id) {
-            const nextQty = item.quantity + delta;
-            return nextQty > 0 ? { ...item, quantity: nextQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
+  if (cart.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#0b0b0c] text-white pt-40 pb-24 px-6 md:px-12 flex flex-col items-center justify-center text-center">
+        <span className="text-[10px] uppercase font-mono tracking-[0.35em] text-neutral-500 block mb-3">
+          Archive Empty
+        </span>
+        <h1 className="font-serif text-3xl sm:text-5xl font-light text-white mb-4">
+          Your Archive Bag is Empty
+        </h1>
+        <p className="text-xs sm:text-sm text-neutral-400 font-light max-w-md mb-8">
+          Explore our authentic handwoven sarees, artisanal batiks, and Dumbara cotton textiles to curate your bespoke commission.
+        </p>
+        <Link
+          href="/shop"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-black text-xs uppercase tracking-wider font-semibold hover:bg-neutral-200 transition shadow-xl"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Browse Textile Archive</span>
+        </Link>
+      </div>
     );
-  };
-
-  const toggleSwatch = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, isSwatchIncluded: !item.isSwatchIncluded } : item
-      )
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const formatLKR = (amount: number) => {
-    return `Rs. ${amount.toLocaleString("en-LK")}`;
-  };
-
-  const subtotal = items.reduce((acc, item) => acc + item.pricePerUnit * item.quantity, 0);
-  const swatchTotal = items.filter((item) => item.isSwatchIncluded).length * 3500;
-  const deliveryCourier = items.length > 0 ? 1200 : 0;
-  const grandTotal = subtotal + swatchTotal + deliveryCourier;
+  }
 
   return (
     <div className="min-h-screen bg-[#0b0b0c] text-white pt-32 pb-24 px-6 md:px-12 selection:bg-white selection:text-black">
       <div className="max-w-7xl mx-auto">
-        {/* Header Breadcrumb */}
-        <div className="pb-8 border-b border-white/10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 mb-8 border-b border-white/10">
           <div>
-            <span className="text-[10px] uppercase font-mono tracking-[0.3em] text-neutral-500 block mb-2">
-              Atelier Acquisition / Bag
+            <span className="text-[10px] uppercase font-mono tracking-[0.35em] text-neutral-500 block mb-2">
+              Selected Textiles
             </span>
             <h1 className="font-serif text-3xl sm:text-5xl font-light text-white">
-              Archive Selection
+              Archive Bag ({totalItems})
             </h1>
           </div>
-          <p className="text-xs uppercase font-mono tracking-widest text-neutral-400">
-            {items.length} {items.length === 1 ? "Curated Weave" : "Curated Weaves"}
-          </p>
+          <button
+            onClick={clearCart}
+            className="text-[11px] uppercase tracking-widest font-mono text-neutral-500 hover:text-red-400 transition"
+          >
+            Clear Entire Bag
+          </button>
         </div>
 
-        {items.length === 0 ? (
-          <div className="py-24 text-center">
-            <p className="font-serif text-2xl text-neutral-400 font-light mb-4">
-              Your archive selection is currently empty.
-            </p>
-            <Link
-              href="/shop"
-              className="inline-block px-6 py-3 rounded-full bg-white text-black text-xs uppercase tracking-widest font-semibold hover:bg-neutral-200 transition"
-            >
-              Explore Textile Archive
-            </Link>
-          </div>
-        ) : (
-          <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            {/* Left: Cart Items */}
-            <div className="lg:col-span-8 flex flex-col divide-y divide-white/10">
-              {items.map((item) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="py-8 first:pt-0 flex flex-col sm:flex-row gap-6 items-start"
-                >
-                  <div className="relative w-28 h-36 rounded-2xl overflow-hidden border border-white/10 shrink-0 bg-[#161618]">
+        {/* Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Cart Items List */}
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            {cart.map(({ product, quantity }) => (
+              <div
+                key={product.id}
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-5 rounded-2xl bg-[#141416] border border-white/10 hover:border-white/20 transition"
+              >
+                <div className="flex items-center gap-5 w-full sm:w-auto">
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-[#1c1c1f] shrink-0">
                     <Image
-                      src={item.image}
-                      alt={item.name}
+                      src={product.images[0]}
+                      alt={product.name}
                       fill
                       className="object-cover"
-                      sizes="112px"
                     />
                   </div>
-
-                  <div className="flex-1 flex flex-col justify-between h-full w-full">
-                    <div className="flex justify-between items-start gap-4">
-                      <div>
-                        <span className="text-[9px] uppercase font-mono tracking-[0.25em] text-neutral-400">
-                          {item.origin} • {item.category}
-                        </span>
-                        <h2 className="font-serif text-lg md:text-xl font-normal text-white mt-1">
-                          {item.name}
-                        </h2>
-                      </div>
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-[11px] uppercase tracking-wider text-neutral-500 hover:text-white transition-colors"
-                      >
-                        Remove
-                      </button>
-                    </div>
-
-                    <p className="text-xs text-neutral-300 mt-2 font-mono">
-                      {formatLKR(item.pricePerUnit)} per {item.unit}
-                    </p>
-
-                    <div className="mt-6 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/5">
-                      {/* Quantity Stepper */}
-                      <div className="flex items-center border border-white/15 rounded-full px-3 py-1 bg-white/5">
-                        <button
-                          onClick={() => updateQuantity(item.id, -1)}
-                          className="text-sm text-neutral-400 hover:text-white px-2"
-                        >
-                          −
-                        </button>
-                        <span className="text-xs font-mono px-3 text-white">
-                          {item.quantity} {item.unit}{item.quantity > 1 && item.unit === "saree" ? "s" : ""}
-                        </span>
-                        <button
-                          onClick={() => updateQuantity(item.id, 1)}
-                          className="text-sm text-neutral-400 hover:text-white px-2"
-                        >
-                          +
-                        </button>
-                      </div>
-
-                      {/* Swatch Checkbox */}
-                      <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-neutral-400 hover:text-neutral-200 transition">
-                        <input
-                          type="checkbox"
-                          checked={item.isSwatchIncluded}
-                          onChange={() => toggleSwatch(item.id)}
-                          className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 text-white focus:ring-0 cursor-pointer"
-                        />
-                        <span>Archival Swatch Sample (+Rs. 3,500)</span>
-                      </label>
-
-                      {/* Item Total */}
-                      <span className="font-mono text-sm text-white font-medium">
-                        {formatLKR(item.pricePerUnit * item.quantity + (item.isSwatchIncluded ? 3500 : 0))}
-                      </span>
-                    </div>
+                  <div>
+                    <span className="text-[9px] uppercase font-mono tracking-widest text-neutral-400 block">
+                      {product.origin}
+                    </span>
+                    <h3 className="font-serif text-lg font-normal text-white mt-0.5">
+                      {product.name}
+                    </h3>
+                    <span className="font-mono text-xs text-neutral-300 block mt-1">
+                      Rs. {product.price.toLocaleString("en-LK")} / {product.unit}
+                    </span>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
 
-            {/* Right: Order Summary */}
-            <div className="lg:col-span-4 bg-[#141416]/90 border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-xl sticky top-28 shadow-2xl">
-              <span className="text-[10px] uppercase font-mono tracking-[0.25em] text-neutral-400 block mb-2">
-                Order Valuation
-              </span>
-              <h2 className="font-serif text-xl font-light text-white pb-4 border-b border-white/10">
-                Summary
+                {/* Quantity & Actions */}
+                <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pt-4 sm:pt-0 border-t sm:border-0 border-white/5">
+                  <div className="flex items-center bg-[#1c1c1f] border border-white/10 rounded-full px-2 py-1">
+                    <button
+                      onClick={() => updateQuantity(product.id, quantity - 1)}
+                      className="p-1 hover:text-neutral-300 transition"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="px-3 text-xs font-mono font-medium">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => updateQuantity(product.id, quantity + 1)}
+                      className="p-1 hover:text-neutral-300 transition"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <span className="font-mono text-sm text-white font-semibold">
+                    Rs. {(product.price * quantity).toLocaleString("en-LK")}
+                  </span>
+
+                  <button
+                    onClick={() => removeFromCart(product.id)}
+                    className="p-2 text-neutral-500 hover:text-red-400 transition"
+                    aria-label="Remove item"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Summary / Order Specs */}
+          <div className="lg:col-span-1">
+            <div className="p-8 rounded-2xl bg-[#141416] border border-white/10 sticky top-32">
+              <h2 className="font-serif text-xl font-normal text-white mb-6">
+                Commission Summary
               </h2>
 
-              <div className="mt-6 flex flex-col gap-3 text-xs">
+              <div className="space-y-4 pb-6 border-b border-white/10 text-xs">
                 <div className="flex justify-between text-neutral-400">
-                  <span>Fabric Total</span>
-                  <span className="font-mono text-white">{formatLKR(subtotal)}</span>
+                  <span>Selected Bolts & Drapes</span>
+                  <span className="font-mono text-white">{totalItems} units</span>
                 </div>
                 <div className="flex justify-between text-neutral-400">
-                  <span>Sample Swatch Folios</span>
-                  <span className="font-mono text-white">{formatLKR(swatchTotal)}</span>
+                  <span>Archival Packaging & Handling</span>
+                  <span className="font-mono text-emerald-400">Complimentary</span>
                 </div>
                 <div className="flex justify-between text-neutral-400">
-                  <span>Island-wide Secure Courier</span>
-                  <span className="font-mono text-white">{formatLKR(deliveryCourier)}</span>
-                </div>
-                <div className="pt-4 mt-2 border-t border-white/10 flex justify-between items-baseline">
-                  <span className="text-sm font-medium text-white">Estimated Total</span>
-                  <span className="font-mono text-xl text-white font-semibold">
-                    {formatLKR(grandTotal)}
-                  </span>
+                  <span>Atelier Dispatch Inspection</span>
+                  <span className="font-mono text-emerald-400">Verified</span>
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-col gap-3">
-                <Link
-                  href="/contact"
-                  className="w-full py-3.5 rounded-full bg-white text-black text-xs uppercase tracking-widest font-semibold hover:bg-neutral-200 text-center transition shadow-xl"
-                >
-                  Proceed to Inquire / Order
-                </Link>
-                <Link
-                  href="/shop"
-                  className="w-full py-3 rounded-full border border-white/15 text-neutral-300 hover:text-white text-center text-xs uppercase tracking-widest transition hover:border-white/30"
-                >
-                  Continue Browsing
-                </Link>
+              <div className="pt-6 pb-8 flex items-baseline justify-between">
+                <span className="text-xs uppercase font-mono tracking-widest text-neutral-400">
+                  Estimated Total
+                </span>
+                <span className="font-mono text-2xl font-light text-white">
+                  Rs. {subtotal.toLocaleString("en-LK")}
+                </span>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-white/5 text-[10px] text-neutral-500 flex flex-col gap-1.5 font-mono">
-                <p>• Handled with bespoke archival packaging.</p>
-                <p>• Verified Sri Lankan artisan certificate included.</p>
-              </div>
+              <Link
+                href="/contact"
+                className="w-full inline-flex items-center justify-center gap-3 py-3.5 rounded-full bg-white text-black text-xs uppercase tracking-wider font-semibold hover:bg-neutral-200 transition shadow-xl"
+              >
+                <span>Proceed to Consultation</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <p className="mt-4 text-[10px] text-center font-mono text-neutral-500 leading-relaxed">
+                Prices inclusive of luxury VAT and master weaver guild contribution.
+              </p>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
