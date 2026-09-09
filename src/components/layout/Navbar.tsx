@@ -9,8 +9,9 @@ import { motion, AnimatePresence } from "framer-motion";
 const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
-  { name: "Craft", href: "/craft" },
-  { name: "Bespoke", href: "/bespoke" },
+  { name: "Collections", href: "/collections" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -18,14 +19,9 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Scroll detect logic
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -34,49 +30,55 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-10 flex justify-center transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 flex justify-center transition-all duration-300 ${
         isScrolled
           ? "py-3 bg-[#0b0b0c]/85 backdrop-blur-md border-b border-white/10 shadow-2xl"
           : "py-6 bg-transparent"
       }`}
     >
-      <div className="w-full max-w-7xl flex items-center justify-between">
+      <div className="relative w-full max-w-7xl flex items-center justify-between">
         {/* Left: Brand Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group z-10">
           <span className="font-serif text-2xl tracking-[0.22em] font-light uppercase text-white">
             AURIC
           </span>
         </Link>
 
-        {/* Center: Floating Pill Navigation */}
-        <nav className="hidden md:flex items-center bg-[#1c1c1f]/90 backdrop-blur-xl border border-white/15 rounded-full px-2 py-1.5 shadow-xl">
-          {NAV_LINKS.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`relative px-5 py-2 text-xs uppercase tracking-wider font-medium transition-colors duration-200 ${
-                  isActive ? "text-black" : "text-neutral-300 hover:text-white"
-                }`}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="activePill"
-                    className="absolute inset-0 bg-white rounded-full -z-10 shadow-sm"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                  />
-                )}
-                {link.name}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Center: Absolute 100% Screen Center Nav Pill */}
+        <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <nav className="flex items-center bg-[#1c1c1f]/90 backdrop-blur-xl border border-white/15 rounded-full px-2 py-1.5 shadow-xl">
+            {NAV_LINKS.map((link) => {
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
 
-        {/* Right: Cart, Login & Sign Up */}
-        <div className="flex items-center gap-4">
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`relative px-4 py-2 text-xs uppercase tracking-wider font-medium transition-colors duration-200 ${
+                    isActive ? "text-black" : "text-neutral-300 hover:text-white"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="activePill"
+                      className="absolute inset-0 bg-white rounded-full -z-10 shadow-sm"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Right: Cart, Login & Sign up */}
+        <div className="flex items-center gap-3 z-10">
           <Link
-            href="/shop"
+            href="/cart"
             className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white transition-all backdrop-blur-md"
             aria-label="Archive Bag"
           >
@@ -84,15 +86,15 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/bespoke"
-            className="hidden sm:inline-block text-xs uppercase tracking-wider text-neutral-300 hover:text-white font-medium transition-colors"
+            href="/contact"
+            className="hidden sm:inline-flex items-center justify-center px-5 py-2 rounded-full bg-[#1c1c1f] hover:bg-[#27272a] border border-white/10 text-xs uppercase tracking-wider text-neutral-200 hover:text-white font-medium transition-all shadow-sm"
           >
             Login
           </Link>
 
           <Link
-            href="/bespoke"
-            className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-black text-xs uppercase tracking-wider font-semibold hover:bg-neutral-200 transition-all shadow-lg"
+            href="/contact"
+            className="hidden sm:inline-flex items-center justify-center px-5 py-2 rounded-full bg-white text-black text-xs uppercase tracking-wider font-semibold hover:bg-neutral-200 transition-all shadow-lg"
           >
             Sign up
           </Link>
@@ -126,18 +128,18 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
               <Link
-                href="/bespoke"
+                href="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="text-xs uppercase tracking-wider text-neutral-300"
+                className="flex-1 text-center py-2 rounded-full bg-[#1c1c1f] border border-white/10 text-xs uppercase tracking-wider text-neutral-200"
               >
                 Login
               </Link>
               <Link
-                href="/bespoke"
+                href="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="px-4 py-2 rounded-full bg-white text-black text-xs uppercase tracking-wider font-semibold"
+                className="flex-1 text-center py-2 rounded-full bg-white text-black text-xs uppercase tracking-wider font-semibold"
               >
                 Sign up
               </Link>

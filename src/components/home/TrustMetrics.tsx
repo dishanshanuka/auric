@@ -1,42 +1,70 @@
-import { Compass, Layers, Award } from "lucide-react";
+"use client";
+
+import Link from "next/link";
 
 export default function TrustMetrics() {
   return (
-    <section className="py-16 px-6 md:px-12 border-y border-white/10 bg-[#121214]">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="flex items-start gap-4">
-          <Compass className="w-6 h-6 text-neutral-400 shrink-0 mt-0.5" />
-          <div>
-            <h4 className="text-xs uppercase tracking-wider font-semibold text-white">
-              Traceable Mill Heritage
-            </h4>
-            <p className="text-xs text-neutral-400 font-light mt-1 leading-relaxed">
-              Direct partnerships with multi-generational looms in Northern Italy, Flanders, and Scotland.
-            </p>
+    <section className="py-28 px-6 md:px-12 max-w-7xl mx-auto w-full">
+      <div className="rounded-3xl bg-linear-to-b from-[#161618] to-[#101012] border border-white/10 p-8 sm:p-14 md:p-20 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12 shadow-2xl">
+        <div className="max-w-xl">
+          <span className="text-[10px] uppercase font-mono tracking-[0.3em] text-neutral-400 block mb-4">
+            Private Atelier Consultations
+          </span>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-white leading-tight">
+            Commission bespoke bolts or private saree viewings.
+          </h2>
+          <p className="text-xs sm:text-sm text-neutral-400 font-light mt-4 leading-relaxed">
+            Our Ward Place atelier in Colombo offers private swatch inspections, custom motif commissions, and tactile drapery sessions for couture designers.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/contact"
+              className="px-7 py-3 rounded-full bg-white text-black text-xs uppercase tracking-widest font-semibold hover:bg-neutral-200 transition shadow-lg"
+            >
+              Schedule Private Viewing
+            </Link>
+            <Link
+              href="/shop"
+              className="px-6 py-3 rounded-full border border-white/20 text-neutral-300 hover:text-white text-xs uppercase tracking-widest font-medium transition"
+            >
+              Order Fabric Swatches
+            </Link>
           </div>
         </div>
 
-        <div className="flex items-start gap-4">
-          <Layers className="w-6 h-6 text-neutral-400 shrink-0 mt-0.5" />
+        {/* Minimalist Metrics */}
+        <div className="grid grid-cols-2 gap-8 border-l border-white/10 pl-0 md:pl-12 w-full md:w-auto">
           <div>
-            <h4 className="text-xs uppercase tracking-wider font-semibold text-white">
-              Zero Synthetic Blends
-            </h4>
-            <p className="text-xs text-neutral-400 font-light mt-1 leading-relaxed">
-              100% natural, certified Grade 6A mulberry silks, pure organic linens, and virgin cashmeres.
-            </p>
+            <span className="font-serif text-4xl sm:text-5xl font-light text-white block">
+              120+
+            </span>
+            <span className="text-[10px] uppercase font-mono tracking-widest text-neutral-500 mt-1 block">
+              Loom Guild Artisans
+            </span>
           </div>
-        </div>
-
-        <div className="flex items-start gap-4">
-          <Award className="w-6 h-6 text-neutral-400 shrink-0 mt-0.5" />
           <div>
-            <h4 className="text-xs uppercase tracking-wider font-semibold text-white">
-              Bespoke Atelier Consultations
-            </h4>
-            <p className="text-xs text-neutral-400 font-light mt-1 leading-relaxed">
-              Custom yarn weights, sample cut swatches, and dedicated concierge for fashion ateliers.
-            </p>
+            <span className="font-serif text-4xl sm:text-5xl font-light text-white block">
+              100%
+            </span>
+            <span className="text-[10px] uppercase font-mono tracking-widest text-neutral-500 mt-1 block">
+              Traceable Handspun
+            </span>
+          </div>
+          <div>
+            <span className="font-serif text-4xl sm:text-5xl font-light text-white block">
+              14
+            </span>
+            <span className="text-[10px] uppercase font-mono tracking-widest text-neutral-500 mt-1 block">
+              Heritage Clusters
+            </span>
+          </div>
+          <div>
+            <span className="font-serif text-4xl sm:text-5xl font-light text-white block">
+              Zero
+            </span>
+            <span className="text-[10px] uppercase font-mono tracking-widest text-neutral-500 mt-1 block">
+              Chemical Effluents
+            </span>
           </div>
         </div>
       </div>

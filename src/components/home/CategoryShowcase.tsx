@@ -1,165 +1,97 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
-interface CategoryHighlight {
-  id: string;
-  name: string;
-  tagline: string;
-  desc: string;
-  featuredProduct: string;
-  price: string;
-  image: string;
-}
-
-const CATEGORY_SHOWCASE: CategoryHighlight[] = [
+const CATEGORIES = [
   {
-    id: "silk",
-    name: "Pure Silk",
-    tagline: "Fluid Drape & Natural Sheen",
-    desc: "Woven on low-tension mechanical shuttle looms in Como to preserve natural cellular elasticity and thermal breathability.",
-    featuredProduct: "Imperial Mulberry Raw Silk",
-    price: "$185 / meter",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1200&auto=format&fit=crop",
+    id: "cat-01",
+    title: "Heirloom Sarees",
+    subtitle: "Pure Kanchipuram & Organza Zari",
+    tag: "Slow Craft",
+    image:
+      "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=1000",
+    href: "/shop?category=Sarees",
   },
   {
-    id: "linen",
-    name: "Belgian Flax",
-    tagline: "Stone-Washed Earthy Texture",
-    desc: "Enzyme stone-washed flax harvested from the riverbanks of Flanders. Natural slubbing creates an effortless architectural silhouette.",
-    featuredProduct: "Flemish Heavyweight Flax",
-    price: "$95 / meter",
-    image: "https://images.unsplash.com/photo-1528458909336-e7a0adfed0a5?q=80&w=1200&auto=format&fit=crop",
+    id: "cat-02",
+    title: "Galle Canting Batik",
+    subtitle: "Hand-Drawn Beeswax on Liquid Silk",
+    tag: "Artisanal Resist",
+    image:
+      "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&q=80&w=1000",
+    href: "/shop?category=Batik",
   },
   {
-    id: "wool",
-    name: "Merino & Cashmere",
-    tagline: "Savile Row Tailoring Grade",
-    desc: "Spun from combed extra-fine 15.5-micron Merino blended with Mongolian cashmere for bespoke structured suiting.",
-    featuredProduct: "Biella Highland Twill",
-    price: "$240 / meter",
-    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: "bespoke",
-    name: "Gilded Filament",
-    tagline: "Couture Metallic Organza",
-    desc: "Translucent silk warp intertwined with gold filament yarn, tailored specifically for royal bridal overlays and red-carpet couture.",
-    featuredProduct: "Lyon Gold Thread Organza",
-    price: "$320 / meter",
-    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1200&auto=format&fit=crop",
+    id: "cat-03",
+    title: "Dumbara Handloom",
+    subtitle: "Historic Shuttle Weaves & Organic Cotton",
+    tag: "Heritage Craft",
+    image:
+      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&q=80&w=1000",
+    href: "/shop?category=Handloom",
   },
 ];
 
 export default function CategoryShowcase() {
-  const [activeCategory, setActiveCategory] = useState<string>("silk");
-  const currentCategoryData = CATEGORY_SHOWCASE.find((c) => c.id === activeCategory) || CATEGORY_SHOWCASE[0];
-
   return (
-    <section className="py-24 px-6 md:px-12 border-t border-white/10 bg-[#0e0e10]">
-      <div className="max-w-7xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-[10px] uppercase tracking-[0.25em] text-neutral-400 mb-6">
-          <Sparkles className="w-3 h-3 text-neutral-300" />
-          <span>Curated Material Study</span>
+    <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 pb-6 border-b border-white/10">
+        <div>
+          <span className="text-[10px] uppercase font-mono tracking-[0.3em] text-neutral-500 block mb-2">
+            Curated Editions
+          </span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-light text-white">
+            Signature Textile Editions
+          </h2>
         </div>
+        <Link
+          href="/collections"
+          className="text-xs uppercase tracking-[0.2em] font-medium text-neutral-400 hover:text-white flex items-center gap-2 transition-colors"
+        >
+          <span>View All Collections</span>
+          <ArrowUpRight className="w-4 h-4" />
+        </Link>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 space-y-6">
-            <h2 className="font-serif text-3xl sm:text-5xl font-light text-white leading-tight">
-              Eclat Ensemble: Radiant Seasonal Arrivals
-            </h2>
-            <p className="text-neutral-400 text-sm font-light leading-relaxed">
-              Experience the pure tactile allure of our mill-run textures. Selected for high-fashion bespoke tailoring and couture draping.
-            </p>
-
-            <div className="pt-4 flex flex-col space-y-3">
-              {CATEGORY_SHOWCASE.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center justify-between text-left py-2.5 px-4 rounded-xl transition-all duration-300 ${
-                    activeCategory === cat.id
-                      ? "bg-white/10 border-l-2 border-white text-white font-medium pl-5"
-                      : "text-neutral-500 hover:text-neutral-300"
-                  }`}
-                >
-                  <span className="text-sm uppercase tracking-wider">{cat.name}</span>
-                  <span className="text-[11px] font-mono text-neutral-400">
-                    {activeCategory === cat.id ? "→ Active" : ""}
-                  </span>
-                </button>
-              ))}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {CATEGORIES.map((item) => (
+          <Link
+            key={item.id}
+            href={item.href}
+            className="group flex flex-col relative overflow-hidden rounded-2xl bg-[#141416] border border-white/10 hover:border-white/25 transition-all duration-500"
+          >
+            <div className="relative aspect-3/4 w-full overflow-hidden bg-[#1a1a1d]">
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
+              <span className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-[9px] uppercase font-mono tracking-widest text-neutral-300">
+                {item.tag}
+              </span>
             </div>
 
-            <div className="pt-2">
-              <Link
-                href="/shop"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black text-xs uppercase tracking-wider font-medium hover:bg-neutral-200 transition-all shadow-md"
-              >
-                <span>View All Collection</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+            <div className="p-6 flex flex-col justify-between flex-1">
+              <div>
+                <h3 className="font-serif text-xl font-normal text-white group-hover:text-neutral-200 transition">
+                  {item.title}
+                </h3>
+                <p className="text-xs text-neutral-400 mt-1 font-light">
+                  {item.subtitle}
+                </p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-[11px] uppercase tracking-widest text-neutral-400 group-hover:text-white pt-4 border-t border-white/5">
+                <span>Explore Series</span>
+                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
             </div>
-          </div>
-
-          <div className="lg:col-span-7">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentCategoryData.id}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.4 }}
-                className="relative h-[420px] md:h-[500px] w-full rounded-[40px] md:rounded-[60px] overflow-hidden border border-white/10 shadow-2xl group"
-              >
-                <Image
-                  src={currentCategoryData.image}
-                  alt={currentCategoryData.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                <div className="absolute bottom-8 right-8 bg-[#141416]/85 backdrop-blur-xl border border-white/20 p-4 rounded-3xl max-w-xs shadow-2xl flex items-center gap-4">
-                  <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-white/20">
-                    <Image
-                      src={currentCategoryData.image}
-                      alt="Thumbnail"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-medium text-white line-clamp-1">
-                      {currentCategoryData.featuredProduct}
-                    </h4>
-                    <p className="text-[11px] text-neutral-400 line-clamp-1">
-                      {currentCategoryData.tagline}
-                    </p>
-                    <span className="text-[11px] font-semibold text-white mt-1 block">
-                      {currentCategoryData.price}
-                    </span>
-                  </div>
-                  <Link
-                    href="/shop"
-                    className="p-2.5 rounded-full bg-white text-black hover:bg-neutral-200 transition shrink-0 ml-auto"
-                  >
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-
-                <div className="absolute top-8 left-8 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-full text-[11px] uppercase tracking-widest text-neutral-300">
-                  {currentCategoryData.name}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+          </Link>
+        ))}
       </div>
     </section>
   );
